@@ -80,6 +80,7 @@ typedef enum {
     EBML_PASS,
     EBML_STOP,
     EBML_SINT,
+    EBML_NEW_INIT_SEGMENT,
     EBML_TYPE_COUNT
 } EbmlType;
 
@@ -737,6 +738,7 @@ static const EbmlSyntax matroska_cluster_incremental_parsing[] = {
     { MATROSKA_ID_CUES,            EBML_NONE },
     { MATROSKA_ID_TAGS,            EBML_NONE },
     { MATROSKA_ID_SEEKHEAD,        EBML_NONE },
+    { EBML_ID_HEADER,              EBML_NEW_INIT_SEGMENT },
     { MATROSKA_ID_CLUSTER,         EBML_STOP },
     { 0 }
 };
@@ -1238,6 +1240,8 @@ static int ebml_parse_elem(MatroskaDemuxContext *matroska,
         return ebml_parse_id(matroska, syntax->def.n, id, data);
     case EBML_STOP:
         return 1;
+    case EBML_NEW_INIT_SEGMENT:
+        return -123456;
     default:
         if (ffio_limit(pb, length) != length)
             return AVERROR(EIO);
@@ -3674,7 +3678,10 @@ static int matroska_read_packet(AVFormatContext *s, AVPacket *pkt)
         int64_t pos = avio_tell(matroska->ctx->pb);
         if (matroska->done)
             return (ret < 0) ? ret : AVERROR_EOF;
-        if (matroska_parse_cluster(matroska) < 0)
+        ret = matroska_parse_cluster(matroska);
+        if (ret == -123456)
+            break;
+        else if (ret < 0)
             ret = matroska_resync(matroska, pos);
     }
 
