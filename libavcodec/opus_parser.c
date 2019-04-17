@@ -25,10 +25,10 @@
  * Determines the duration for each packet.
  */
 
-#include "avcodec.h"
-#include "bytestream.h"
-#include "opus.h"
-#include "parser.h"
+#include "libavcodec/avcodec.h"
+#include "libavcodec/bytestream.h"
+#include "libavcodec/opus.h"
+#include "libavcodec/parser.h"
 
 typedef struct OpusParseContext {
     ParseContext pc;
@@ -180,9 +180,7 @@ static int opus_parse(AVCodecParserContext *ctx, AVCodecContext *avctx,
     }
 
     if (next == AVERROR_INVALIDDATA){
-        *poutbuf      = NULL;
-        *poutbuf_size = 0;
-        return buf_size;
+        next = buf_size;
     }
 
     *poutbuf      = buf + header_len;
