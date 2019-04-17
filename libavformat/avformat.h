@@ -320,7 +320,7 @@
 #include "libavutil/dict.h"
 #include "libavutil/log.h"
 
-#include "avio.h"
+#include "libavformat/avio.h"
 #include "libavformat/version.h"
 
 struct AVFormatContext;
@@ -2166,6 +2166,14 @@ AVStream *avformat_new_stream(AVFormatContext *s, const AVCodec *c);
  */
 int av_stream_add_side_data(AVStream *st, enum AVPacketSideDataType type,
                             uint8_t *data, size_t size);
+
+/**
+ * Remove the given side data type from the stream.
+ *
+ * @param st stream
+ * @param type side information type
+ */
+void av_stream_remove_side_data(AVStream *st, enum AVPacketSideDataType type);
 
 /**
  * Allocate new information from stream.
