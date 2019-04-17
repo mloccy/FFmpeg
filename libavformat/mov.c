@@ -1140,9 +1140,8 @@ static int mov_read_moov(MOVContext *c, AVIOContext *pb, MOVAtom atom)
     int ret;
 
     if (c->found_moov) {
-        av_log(c->fc, AV_LOG_WARNING, "Found duplicated MOOV Atom. Skipped it\n");
-        avio_skip(pb, atom.size);
-        return 0;
+        av_log(c->fc, AV_LOG_INFO, "Found duplicated MOOV Atom. Stopping.\n");
+        return -123456;
     }
 
     if ((ret = mov_read_default(c, pb, atom)) < 0)
