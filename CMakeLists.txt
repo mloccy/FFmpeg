@@ -592,6 +592,17 @@ install(
 )
 
 install(
-    FILES ${ffmpeg_native_gen_dir}/libavutil/avconfig.h
+    FILES
+    ${ffmpeg_native_gen_dir}/libavutil/avconfig.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libavutil
+)
+
+install(
+    FILES ${ffmpeg_native_gen_dir}/config.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libavutil
+)
+
+install(
+    FILES ${ffmpeg_native_gen_dir}/config.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libavformat
 )
