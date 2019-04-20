@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+if("@APPLE@")
+  find_package(audiotoolbox REQUIRED)
+  find_package(corefoundation REQUIRED)
+  find_package(coremedia REQUIRED)
+  find_package(coregraphics REQUIRED)
+  find_package(corevideo REQUIRED)
+  find_package(videotoolbox REQUIRED)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_EXPORT_NAME@.cmake")
+check_required_components("@PROJECT_NAME@")
