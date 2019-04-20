@@ -1,0 +1,4 @@
+#ifndef AVUTIL_FFVERSION_H
+#define AVUTIL_FFVERSION_H
+#define FFMPEG_VERSION "hunter-n4.1-dev-45499e557c"
+#endif /* AVUTIL_FFVERSION_H */
