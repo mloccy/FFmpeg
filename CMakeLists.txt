@@ -360,6 +360,7 @@ set(
 )
 
 add_library(avformat ${ffmpeg_format_files})
+target_link_libraries(avformat PUBLIC avcodec)
 
 set(
     ffmpeg_util_files
