@@ -96,6 +96,8 @@ list(
     --enable-parser=mpeg4video
     --disable-optimizations
     --enable-debug
+    --cc=${CMAKE_C_COMPILER}
+    --cxx=${CMAKE_CXX_COMPILER}
 )
 
 # From Hunter (?)
@@ -116,6 +118,24 @@ execute_process(
 
 if(NOT result EQUAL "0")
   message(FATAL_ERROR "Configure failed: ${result}")
+endif()
+
+
+# Fixup CFLAGS and CXXFLAGS from autoconf output
+option(FFMPEG_AUTOCONF_FLAGS "Grep flags from autoconf" OFF)
+
+if(FFMPEG_AUTOCONF_FLAGS)
+  file(READ "${ffmpeg_native_gen_dir}/ffbuild/config.mak" file_content)
+  foreach(flag CFLAGS CXXFLAGS CPPFLAGS)
+    string(REGEX MATCH "[\r|\n]${flag}=([^\r\n]+)[\r\n]" _ "${file_content}")
+    if(NOT ${CMAKE_MATCH_COUNT} EQUAL 1)
+      message(FATAL_ERROR "Could not find generated ${flag}")
+    endif()
+    set(${flag} "${CMAKE_MATCH_1}")
+    string(REPLACE "$(SRC_PATH)" "${CMAKE_CURRENT_LIST_DIR}" ${flag} "${${flag}}")
+  endforeach()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXXFLGAS} ${CPPFLAGS}")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CFLAGS} ${CPPFLAGS}")
 endif()
 
 # BUILD.gn
