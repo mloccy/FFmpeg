@@ -605,6 +605,7 @@ install(
     libavformat
     libavutil
     libswresample
+    libswscale
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING
     PATTERN "*.h"
