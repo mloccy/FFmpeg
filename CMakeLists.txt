@@ -511,8 +511,6 @@ foreach(x ${all_targets})
   target_compile_definitions(
       ${x}
       PRIVATE
-      HAS_SWSCALE
-      ENABLE_HARDWARE_DECODE
 
       # BUILD.gn
       # config("internal_config")
