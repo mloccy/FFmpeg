@@ -47,6 +47,12 @@ else()
    list(APPEND configure_script --disable-avfilter)
 endif()
 
+# Individual component options
+set(FFMPEG_ENABLE_ENCODER "" CACHE STRING "List of encoders to enable")
+foreach(x ${FFMPEG_ENABLE_ENCODER})
+  list(APPEND configure_script --enable-encoder=${x})
+endforeach()
+
 set(FFMPEG_ENABLE_MUXER "" CACHE STRING "List of muxers to enable")
 foreach(x ${FFMPEG_ENABLE_MUXER})
   list(APPEND configure_script --enable-muxer=${x})
