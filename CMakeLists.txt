@@ -154,8 +154,6 @@ list(
     --disable-securetransport
     --disable-xlib
     --disable-asm
-    --enable-demuxer=matroska
-    --enable-demuxer=mov
     --enable-parser=h264
     --enable-parser=hevc
     --enable-parser=vp8
