@@ -51,6 +51,15 @@ else()
   )
 endif()
 
+option(FFMPEG_ENABLE_AUTODETECT "Enable automatically detected external libraries" ON)
+if(FFMPEG_ENABLE_AUTODETECT)
+  # Configuration is not predictable
+  list(APPEND configure_script --enable-autodetect)
+else()
+  # videotoolbox will be disabled on macOS
+  list(APPEND configure_script --disable-autodetect)
+endif()
+
 # Program options
 option(FFMPEG_ENABLE_PROGRAMS "Build command line programs" OFF)
 if(NOT FFMPEG_ENABLE_PROGRAMS)
@@ -132,9 +141,6 @@ list(
     --disable-manpages
     --disable-podpages
     --disable-txtpages
-
-    # External library support:
-    --disable-autodetect
 
     --disable-avdevice
     --enable-avcodec
