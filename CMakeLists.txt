@@ -28,6 +28,12 @@ set(
     ${CMAKE_CURRENT_LIST_DIR}/configure
 )
 
+# Program options
+option(FFMPEG_ENABLE_PROGRAMS "Build command line programs" OFF)
+if(NOT FFMPEG_ENABLE_PROGRAMS)
+  list(APPEND configure_script --disable-programs)
+endif()
+
 if(BUILD_SHARED_LIBS)
   list(
       APPEND
@@ -49,7 +55,6 @@ list(
     configure_script
     --enable-cross-compile
     --fatal-warnings
-    --disable-programs
     --disable-doc
     --disable-avdevice
     --enable-avcodec
@@ -518,6 +523,29 @@ set(
     swresample
     swscale
 )
+
+if(FFMPEG_ENABLE_PROGRAMS)
+  add_executable(
+      ffmpeg
+      fftools/ffmpeg_opt.c
+      fftools/ffmpeg_filter.c
+      fftools/ffmpeg_hw.c
+      fftools/cmdutils.c
+      fftools/ffmpeg.c
+  )
+
+  target_link_libraries(ffmpeg PRIVATE ${all_targets})
+  list(APPEND all_targets ffmpeg)
+
+  include(CheckLibraryExists)
+  check_library_exists(m "pow" "" __math_system_library)
+  if(__math_system_library)
+    target_link_libraries(ffmpeg PRIVATE m)
+  endif()
+
+  find_package(Threads REQUIRED)
+  target_link_libraries(ffmpeg PRIVATE Threads::Threads)
+endif()
 
 foreach(x ${all_targets})
   target_compile_definitions(
