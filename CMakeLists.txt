@@ -447,8 +447,10 @@ if(APPLE)
       ffmpeg_codec_files
       libavcodec/videotoolbox.c
   )
-else()
-  # config.h:#define CONFIG_V4L2_M2M 0
+endif()
+
+# libavcodec/Makefile:OBJS-$(CONFIG_V4L2_M2M) += v4l2_m2m.o v4l2_context.o v4l2_buffers.o v4l2_fmt.o
+if("CONFIG_V4L2_M2M=yes" IN_LIST native_cfg)
   list(
       APPEND
       ffmpeg_codec_files
