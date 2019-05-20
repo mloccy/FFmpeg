@@ -47,6 +47,13 @@ else()
    list(APPEND configure_script --disable-avfilter)
 endif()
 
+option(FFMPEG_ENABLE_SWSCALE "Enable libswscale build" OFF)
+if(FFMPEG_ENABLE_SWSCALE)
+  list(APPEND configure_script --enable-swscale)
+else()
+  list(APPEND configure_script --disable-swscale)
+endif()
+
 # Individual component options
 set(FFMPEG_ENABLE_ENCODER "" CACHE STRING "List of encoders to enable")
 foreach(x ${FFMPEG_ENABLE_ENCODER})
@@ -127,7 +134,6 @@ list(
     --enable-avcodec
     --enable-avformat
     --enable-swresample
-    --disable-swscale
     --disable-postproc
     --disable-avresample
     --disable-network
