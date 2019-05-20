@@ -343,6 +343,24 @@ set(
     libavcodec/vp9prob.c
 )
 
+# libavcodec/Makefile:OBJS-$(CONFIG_FRAME_THREAD_ENCODER) += frame_thread_encoder.o
+if("CONFIG_FRAME_THREAD_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/frame_thread_encoder.c
+  )
+endif()
+
+# libavcodec/Makefile:OBJS-$(CONFIG_BMP_ENCODER) += bmpenc.o
+if("CONFIG_BMP_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/bmpenc.c
+  )
+endif()
+
 if(APPLE)
   # config.h:#define CONFIG_AAC_ADTSTOASC_BSF 1
   list(
@@ -414,6 +432,96 @@ set(
     libavformat/oggparsevorbis.c
     libavformat/qtpalette.c
 )
+
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE2_DEMUXER)             += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE2PIPE_DEMUXER)         += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_BMP_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_DDS_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_DPX_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_EXR_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_J2K_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_JPEG_PIPE_DEMUXER)    += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_JPEGLS_PIPE_DEMUXER)  += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PAM_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PBM_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PCX_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PGMYUV_PIPE_DEMUXER)  += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PGM_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PICTOR_PIPE_DEMUXER)  += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PNG_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PPM_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_PSD_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_QDRAW_PIPE_DEMUXER)   += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_SGI_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_SVG_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_SUNRAST_PIPE_DEMUXER) += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_TIFF_PIPE_DEMUXER)    += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_WEBP_PIPE_DEMUXER)    += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_XPM_PIPE_DEMUXER)     += img2dec.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE_XWD_PIPE_DEMUXER)     += img2dec.o img2.o
+
+if(
+    "CONFIG_IMAGE2_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE2PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_BMP_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_DDS_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_DPX_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_EXR_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_J2K_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_JPEG_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_JPEGLS_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PAM_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PBM_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PCX_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PGMYUV_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PGM_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PICTOR_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PNG_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PPM_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_PSD_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_QDRAW_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_SGI_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_SVG_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_SUNRAST_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_TIFF_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_WEBP_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_XPM_PIPE_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE_XWD_PIPE_DEMUXER=yes" IN_LIST native_cfg
+)
+  list(
+      APPEND
+      ffmpeg_format_files
+      libavformat/img2dec.c
+      libavformat/img2.c
+  )
+endif()
+
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE2_MUXER)     += img2enc.o img2.o
+# libavformat/Makefile:OBJS-$(CONFIG_IMAGE2PIPE_MUXER) += img2enc.o img2.o
+if(
+    "CONFIG_IMAGE2PIPE_MUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_IMAGE2_MUXER=yes" IN_LIST native_cfg
+)
+  list(
+      APPEND
+      ffmpeg_format_files
+      libavformat/img2enc.c
+      libavformat/img2.c
+  )
+endif()
+
+# libavformat/Makefile:OBJS-$(CONFIG_FILE_PROTOCOL) += file.o
+# libavformat/Makefile:OBJS-$(CONFIG_PIPE_PROTOCOL) += file.o
+if(
+    "CONFIG_FILE_PROTOCOL=yes" IN_LIST native_cfg OR
+    "CONFIG_PIPE_PROTOCOL=yes" IN_LIST native_cfg
+)
+  list(
+      APPEND
+      ffmpeg_format_files
+      libavformat/file.c
+  )
+endif()
 
 add_library(avformat ${ffmpeg_format_files})
 target_link_libraries(avformat PUBLIC avcodec)
