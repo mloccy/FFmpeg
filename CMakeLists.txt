@@ -8,6 +8,18 @@ HunterGate(
 
 project(ffmpeg VERSION 4.1)
 
+try_compile(
+    ffmpeg_stdatomic_support
+    "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_stdatomic_support/try_compile"
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/try_compile/stdatomic.c"
+    OUTPUT_VARIABLE
+    output
+)
+
+if(NOT ffmpeg_stdatomic_support)
+  message(FATAL_ERROR "stdatomic is not supported: ${output}")
+endif()
+
 set(ffmpeg_native_gen_dir "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_native_gen")
 file(MAKE_DIRECTORY "${ffmpeg_native_gen_dir}")
 
