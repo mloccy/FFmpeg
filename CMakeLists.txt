@@ -59,6 +59,18 @@ foreach(x ${FFMPEG_ENABLE_FILTER})
   list(APPEND configure_script --enable-filter=${x})
 endforeach()
 
+# External library support
+option(FFMPEG_ENABLE_LIBX264 "Enable H.264 encoding via x264" OFF)
+if(FFMPEG_ENABLE_LIBX264)
+  # Hunter will set PKG_CONFIG_LIBDIR environment variable, no other actions
+  # needed to integrate x264. 'find_package' added for sanity check.
+  hunter_add_package(x264)
+  find_package(x264 CONFIG REQUIRED)
+  list(APPEND configure_script --enable-libx264)
+else()
+  list(APPEND configure_script --disable-libx264)
+endif()
+
 option(FFMPEG_ENABLE_OPENCL "Enable OpenCL processing" OFF)
 if(FFMPEG_ENABLE_OPENCL)
   list(APPEND configure_script --enable-opencl)
