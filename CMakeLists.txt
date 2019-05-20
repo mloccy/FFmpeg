@@ -55,7 +55,13 @@ list(
     configure_script
     --enable-cross-compile
     --fatal-warnings
+
+    # Documentation options
     --disable-doc
+    --disable-htmlpages
+    --disable-manpages
+    --disable-podpages
+    --disable-txtpages
     --disable-avdevice
     --enable-avcodec
     --enable-avformat
