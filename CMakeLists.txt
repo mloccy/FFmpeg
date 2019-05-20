@@ -23,6 +23,7 @@ endif()
 set(
     configure_script
     ${CMAKE_CURRENT_LIST_DIR}/configure
+    --disable-everything
 )
 
 # Licensing options
@@ -141,7 +142,6 @@ list(
     --disable-postproc
     --disable-avresample
     --disable-network
-    --disable-everything
     --disable-bzlib
     --disable-iconv
     --disable-libxcb
