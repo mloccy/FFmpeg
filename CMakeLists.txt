@@ -39,6 +39,11 @@ if(NOT FFMPEG_ENABLE_PROGRAMS)
   list(APPEND configure_script --disable-programs)
 endif()
 
+set(FFMPEG_ENABLE_FILTER "" CACHE STRING "List of filters to enable")
+foreach(x ${FFMPEG_ENABLE_FILTER})
+  list(APPEND configure_script --enable-filter=${x})
+endforeach()
+
 option(FFMPEG_ENABLE_OPENCL "Enable OpenCL processing" OFF)
 if(FFMPEG_ENABLE_OPENCL)
   list(APPEND configure_script --enable-opencl)
