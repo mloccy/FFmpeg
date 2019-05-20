@@ -20,9 +20,6 @@ if(NOT ffmpeg_stdatomic_support)
   message(FATAL_ERROR "stdatomic is not supported: ${output}")
 endif()
 
-set(ffmpeg_native_gen_dir "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_native_gen")
-file(MAKE_DIRECTORY "${ffmpeg_native_gen_dir}")
-
 set(
     configure_script
     ${CMAKE_CURRENT_LIST_DIR}/configure
@@ -41,6 +38,9 @@ option(FFMPEG_ENABLE_PROGRAMS "Build command line programs" OFF)
 if(NOT FFMPEG_ENABLE_PROGRAMS)
   list(APPEND configure_script --disable-programs)
 endif()
+
+set(ffmpeg_native_gen_dir "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_native_gen")
+file(MAKE_DIRECTORY "${ffmpeg_native_gen_dir}")
 
 if(BUILD_SHARED_LIBS)
   list(
@@ -155,6 +155,7 @@ if(NOT result EQUAL "0")
   message(FATAL_ERROR "Configure failed: ${result}")
 endif()
 
+file(STRINGS "${ffmpeg_native_gen_dir}/ffbuild/config.mak" native_cfg)
 
 # Fixup CFLAGS and CXXFLAGS from autoconf output
 option(FFMPEG_AUTOCONF_FLAGS "Grep flags from autoconf" OFF)
