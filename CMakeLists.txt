@@ -138,6 +138,10 @@ list(
     --disable-zlib
 )
 
+set(configure_human "${configure_script}")
+string(REPLACE ";" " " configure_human "${configure_human}")
+message("Run configure command:\n${configure_human}")
+
 execute_process(
     COMMAND
     ${configure_script}
