@@ -28,6 +28,14 @@ set(
     ${CMAKE_CURRENT_LIST_DIR}/configure
 )
 
+# Licensing options
+option(FFMPEG_ENABLE_GPL "Allow use of GPL code" OFF)
+if(FFMPEG_ENABLE_GPL)
+  list(APPEND configure_script --enable-gpl)
+else()
+  list(APPEND configure_script --disable-gpl)
+endif()
+
 # Program options
 option(FFMPEG_ENABLE_PROGRAMS "Build command line programs" OFF)
 if(NOT FFMPEG_ENABLE_PROGRAMS)
