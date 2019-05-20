@@ -34,6 +34,23 @@ else()
   list(APPEND configure_script --disable-gpl)
 endif()
 
+# Configuration options
+if(BUILD_SHARED_LIBS)
+  list(
+      APPEND
+      configure_script
+      --disable-static
+      --enable-shared
+  )
+else()
+  list(
+      APPEND
+      configure_script
+      --disable-shared
+      --enable-static
+  )
+endif()
+
 # Program options
 option(FFMPEG_ENABLE_PROGRAMS "Build command line programs" OFF)
 if(NOT FFMPEG_ENABLE_PROGRAMS)
@@ -102,22 +119,6 @@ endif()
 
 set(ffmpeg_native_gen_dir "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_native_gen")
 file(MAKE_DIRECTORY "${ffmpeg_native_gen_dir}")
-
-if(BUILD_SHARED_LIBS)
-  list(
-      APPEND
-      configure_script
-      --disable-static
-      --enable-shared
-  )
-else()
-  list(
-      APPEND
-      configure_script
-      --disable-shared
-      --enable-static
-  )
-endif()
 
 list(
     APPEND
