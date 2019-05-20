@@ -39,6 +39,14 @@ if(NOT FFMPEG_ENABLE_PROGRAMS)
   list(APPEND configure_script --disable-programs)
 endif()
 
+# Component options
+option(FFMPEG_ENABLE_AVFILTER "Enable libavfilter build" OFF)
+if(FFMPEG_ENABLE_AVFILTER)
+   list(APPEND configure_script --enable-avfilter)
+else()
+   list(APPEND configure_script --disable-avfilter)
+endif()
+
 set(FFMPEG_ENABLE_MUXER "" CACHE STRING "List of muxers to enable")
 foreach(x ${FFMPEG_ENABLE_MUXER})
   list(APPEND configure_script --enable-muxer=${x})
@@ -115,7 +123,6 @@ list(
     --enable-swresample
     --disable-swscale
     --disable-postproc
-    --disable-avfilter
     --disable-avresample
     --disable-network
     --disable-everything
@@ -689,6 +696,53 @@ set(
     swresample
     swscale
 )
+
+if(FFMPEG_ENABLE_AVFILTER)
+  set(
+      avfilter_files
+      libavfilter/af_aformat.c
+      libavfilter/af_anull.c
+      libavfilter/allfilters.c
+      libavfilter/audio.c
+      libavfilter/avfilter.c
+      libavfilter/avfiltergraph.c
+      libavfilter/buffersink.c
+      libavfilter/buffersrc.c
+      libavfilter/drawutils.c
+      libavfilter/fifo.c
+      libavfilter/formats.c
+      libavfilter/framepool.c
+      libavfilter/framequeue.c
+      libavfilter/framesync.c
+      libavfilter/graphdump.c
+      libavfilter/graphparser.c
+      libavfilter/pthread.c
+      libavfilter/transform.c
+      libavfilter/trim.c
+      libavfilter/vf_format.c
+      libavfilter/vf_null.c
+      libavfilter/vf_overlay.c
+      libavfilter/video.c
+  )
+
+  # libavfilter/Makefile:OBJS-$(CONFIG_SCALE2REF_FILTER) += vf_scale.o scale.o
+  # libavfilter/Makefile:OBJS-$(CONFIG_SCALE_FILTER) += vf_scale.o scale.o
+  if(
+      "CONFIG_SCALE_FILTER=yes" IN_LIST native_cfg OR
+      "CONFIG_SCALE2REF_FILTER=yes" IN_LIST native_cfg
+  )
+    list(
+        APPEND
+        avfilter_files
+        libavfilter/vf_scale.c
+        libavfilter/scale.c
+    )
+  endif()
+
+  add_library(avfilter ${avfilter_files})
+
+  list(APPEND all_targets avfilter)
+endif()
 
 if(FFMPEG_ENABLE_PROGRAMS)
   add_executable(
