@@ -432,6 +432,25 @@ if("CONFIG_BMP_ENCODER=yes" IN_LIST native_cfg)
   )
 endif()
 
+# OBJS-$(CONFIG_EAC3_DECODER) += eac3_data.o
+if("CONFIG_EAC3_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/eac3_data.c
+  )
+endif()
+
+# OBJS-$(CONFIG_EAC3_ENCODER) += eac3enc.o eac3_data.o
+if("CONFIG_EAC3_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/eac3enc.c
+      libavcodec/eac3_data.c
+  )
+endif()
+
 if(APPLE)
   # config.h:#define CONFIG_AAC_ADTSTOASC_BSF 1
   list(
