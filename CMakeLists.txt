@@ -39,6 +39,16 @@ if(NOT FFMPEG_ENABLE_PROGRAMS)
   list(APPEND configure_script --disable-programs)
 endif()
 
+set(FFMPEG_ENABLE_MUXER "" CACHE STRING "List of muxers to enable")
+foreach(x ${FFMPEG_ENABLE_MUXER})
+  list(APPEND configure_script --enable-muxer=${x})
+endforeach()
+
+set(FFMPEG_ENABLE_DEMUXER "matroska;mov" CACHE STRING "List of demuxers to enable")
+foreach(x ${FFMPEG_ENABLE_DEMUXER})
+  list(APPEND configure_script --enable-demuxer=${x})
+endforeach()
+
 set(FFMPEG_ENABLE_PROTOCOL "" CACHE STRING "List of protocols to enable")
 foreach(x ${FFMPEG_ENABLE_PROTOCOL})
   list(APPEND configure_script --enable-protocol=${x})
