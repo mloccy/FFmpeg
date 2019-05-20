@@ -39,6 +39,11 @@ if(NOT FFMPEG_ENABLE_PROGRAMS)
   list(APPEND configure_script --disable-programs)
 endif()
 
+set(FFMPEG_ENABLE_PROTOCOL "" CACHE STRING "List of protocols to enable")
+foreach(x ${FFMPEG_ENABLE_PROTOCOL})
+  list(APPEND configure_script --enable-protocol=${x})
+endforeach()
+
 set(FFMPEG_ENABLE_FILTER "" CACHE STRING "List of filters to enable")
 foreach(x ${FFMPEG_ENABLE_FILTER})
   list(APPEND configure_script --enable-filter=${x})
