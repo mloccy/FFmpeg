@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.155.tar.gz"
-    SHA1 "6421d63cc4fd78b8622e863c6b1dcabce98e1216"
+    URL "https://github.com/ruslo/hunter/archive/v0.23.171.tar.gz"
+    SHA1 "5d68bcca78eee347239ca5f4d34f4b6c12683154"
 )
 
 project(ffmpeg VERSION 4.1)
