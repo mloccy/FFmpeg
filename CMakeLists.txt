@@ -17,7 +17,11 @@ try_compile(
 )
 
 if(NOT ffmpeg_stdatomic_support)
-  message(FATAL_ERROR "stdatomic is not supported: ${output}")
+  if(CMAKE_COMPILER_IS_GNUCXX)
+    include_directories("${CMAKE_CURRENT_LIST_DIR}/compat/atomics/gcc")
+  else()
+    message(FATAL_ERROR "stdatomic is not supported: ${output}")
+  endif()
 endif()
 
 set(
