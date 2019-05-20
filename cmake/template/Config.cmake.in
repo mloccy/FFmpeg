@@ -1,5 +1,7 @@
 @PACKAGE_INIT@
 
+find_package(Threads REQUIRED)
+
 if("@APPLE@")
   find_package(audiotoolbox REQUIRED)
   find_package(corefoundation REQUIRED)

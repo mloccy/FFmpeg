@@ -588,6 +588,9 @@ endif()
 add_library(avformat ${ffmpeg_format_files})
 target_link_libraries(avformat PUBLIC avcodec)
 
+find_package(Threads REQUIRED)
+target_link_libraries(avformat PUBLIC Threads::Threads)
+
 set(
     ffmpeg_util_files
     libavutil/error.c
@@ -669,6 +672,8 @@ if(APPLE)
 endif()
 
 add_library(avutil ${ffmpeg_util_files})
+target_link_libraries(avformat PUBLIC avutil)
+target_link_libraries(avcodec PUBLIC avutil)
 
 set(
     ffmpeg_swresample_files
@@ -683,6 +688,7 @@ set(
 )
 
 add_library(swresample ${ffmpeg_swresample_files})
+target_link_libraries(avcodec PUBLIC swresample)
 
 set(
     ffmpeg_swscale_files
