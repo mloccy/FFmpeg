@@ -130,6 +130,10 @@ list(
     --disable-manpages
     --disable-podpages
     --disable-txtpages
+
+    # External library support:
+    --disable-autodetect
+
     --disable-avdevice
     --enable-avcodec
     --enable-avformat
