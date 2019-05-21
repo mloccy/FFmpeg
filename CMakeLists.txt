@@ -269,7 +269,6 @@ set(
     libavcodec/avdct.c
     libavcodec/h264qpel.c
     libavcodec/jrevdct.c
-    libavcodec/ac3tab.c
     libavcodec/mpegvideodata.c
     libavcodec/h264_mb.c
     libavcodec/decode.c
@@ -291,7 +290,6 @@ set(
     libavcodec/h264pred.c
     libavcodec/idctdsp.c
     libavcodec/vp9_superframe_split_bsf.c
-    libavcodec/aacsbr.c
     libavcodec/opusdec.c
     libavcodec/h263dsp.c
     libavcodec/mpeg12framerate.c
@@ -304,31 +302,25 @@ set(
     libavcodec/h264_refs.c
     libavcodec/opus_celt.c
     libavcodec/hevc_sei.c
-    libavcodec/kbdwin.c
     libavcodec/codec_desc.c
     libavcodec/hevc_parse.c
     libavcodec/error_resilience.c
     libavcodec/vp9block.c
     libavcodec/h264_cabac.c
-    libavcodec/cbrt_data.c
     libavcodec/qsv_api.c
     libavcodec/vp9recon.c
     libavcodec/mathtables.c
     libavcodec/vp9dsp.c
-    libavcodec/ac3dec_float.c
     libavcodec/sinewin_fixed.c
-    libavcodec/ac3.c
     libavcodec/blockdsp.c
     libavcodec/mpegutils.c
     libavcodec/hevc_cabac.c
     libavcodec/bitstream_filters.c
     libavcodec/fft_init_table.c
-    libavcodec/aactab.c
     libavcodec/startcode.c
     libavcodec/h264data.c
     libavcodec/cabac.c
     libavcodec/vp8.c
-    libavcodec/aacps_float.c
     libavcodec/bswapdsp.c
     libavcodec/latm_parser.c
     libavcodec/fft_fixed_32.c
@@ -385,7 +377,6 @@ set(
     libavcodec/dv_profile.c
     libavcodec/sbrdsp.c
     libavcodec/h264_loopfilter.c
-    libavcodec/ac3dec_data.c
     libavcodec/options.c
     libavcodec/mpegpicture.c
     libavcodec/sinewin.c
@@ -394,7 +385,6 @@ set(
     libavcodec/profiles.c
     libavcodec/simple_idct.c
     libavcodec/allcodecs.c
-    libavcodec/aacdec.c
     libavcodec/avpicture.c
     libavcodec/mpeg4audio.c
     libavcodec/vp56rac.c
@@ -403,7 +393,6 @@ set(
     libavcodec/utils.c
     libavcodec/ac3_parser.c
     libavcodec/h264_direct.c
-    libavcodec/ac3dsp.c
     libavcodec/mpegvideo_motion.c
     libavcodec/rl.c
     libavcodec/adts_header.c
@@ -448,6 +437,259 @@ if("CONFIG_EAC3_ENCODER=yes" IN_LIST native_cfg)
       ffmpeg_codec_files
       libavcodec/eac3enc.c
       libavcodec/eac3_data.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AC3_FIXED_DECODER) += ac3dec_fixed.o ac3dec_data.o ac3.o kbdwin.o ac3tab.o
+if("CONFIG_AC3_FIXED_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3dec_fixed.c
+      libavcodec/ac3dec_data.c
+      libavcodec/ac3.c
+      libavcodec/kbdwin.c
+      libavcodec/ac3tab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AC3_DECODER) += ac3dec_float.o ac3dec_data.o ac3.o kbdwin.o ac3tab.o
+if("CONFIG_AC3_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3dec_float.c
+      libavcodec/ac3dec_data.c
+      libavcodec/ac3.c
+      libavcodec/kbdwin.c
+      libavcodec/ac3tab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AC3DSP) += ac3dsp.o ac3.o ac3tab.o
+if("CONFIG_AC3DSP=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3dsp.c
+      libavcodec/ac3.c
+      libavcodec/ac3tab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AC3_FIXED_ENCODER) += ac3enc_fixed.o ac3enc.o ac3tab.o ac3.o
+if("CONFIG_AC3_FIXED_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3enc_fixed.c
+      libavcodec/ac3enc.c
+      libavcodec/ac3tab.c
+      libavcodec/ac3.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AC3_ENCODER) += ac3enc_float.o ac3enc.o ac3tab.o ac3.o kbdwin.o
+if("CONFIG_AC3_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3enc_float.c
+      libavcodec/ac3enc.c
+      libavcodec/ac3tab.c
+      libavcodec/ac3.c
+      libavcodec/kbdwin.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AAC_DECODER) += aacdec.o aactab.o aacsbr.o aacps_float.o mpeg4audio.o kbdwin.o sbrdsp.o aacpsdsp_float.o cbrt_data.o
+if("CONFIG_AAC_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/aacdec.c
+      libavcodec/aactab.c
+      libavcodec/aacsbr.c
+      libavcodec/aacps_float.c
+      libavcodec/mpeg4audio.c
+      libavcodec/kbdwin.c
+      libavcodec/sbrdsp.c
+      libavcodec/aacpsdsp_float.c
+      libavcodec/cbrt_data.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AAC_ENCODER) += aacenc.o aaccoder.o aacenctab.o aacpsy.o aactab.o aacenc_is.o aacenc_tns.o aacenc_ltp.o aacenc_pred.o psymodel.o mpeg4audio.o kbdwin.o cbrt_data.o
+if("CONFIG_AAC_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/aacenc.c
+      libavcodec/aaccoder.c
+      libavcodec/aacenctab.c
+      libavcodec/aacpsy.c
+      libavcodec/aactab.c
+      libavcodec/aacenc_is.c
+      libavcodec/aacenc_tns.c
+      libavcodec/aacenc_ltp.c
+      libavcodec/aacenc_pred.c
+      libavcodec/psymodel.c
+      libavcodec/mpeg4audio.c
+      libavcodec/kbdwin.c
+      libavcodec/cbrt_data.c
+  )
+endif()
+
+# OBJS-$(CONFIG_DOLBY_E_DECODER) += dolby_e.o kbdwin.o
+if("CONFIG_DOLBY_E_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/dolby_e.c
+      libavcodec/kbdwin.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AAC_FIXED_DECODER) += aacdec_fixed.o aactab.o aacsbr_fixed.o aacps_fixed.o mpeg4audio.o kbdwin.o sbrdsp_fixed.o aacpsdsp_fixed.o cbrt_data_fixed.o
+if("CONFIG_AAC_FIXED_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/aacdec_fixed.c
+      libavcodec/aactab.c
+      libavcodec/aacsbr_fixed.c
+      libavcodec/aacps_fixed.c
+      libavcodec/mpeg4audio.c
+      libavcodec/kbdwin.c
+      libavcodec/sbrdsp_fixed.c
+      libavcodec/aacpsdsp_fixed.c
+      libavcodec/cbrt_data_fixed.c
+  )
+endif()
+
+# OBJS-$(CONFIG_CAF_DEMUXER) += ac3tab.o
+if("CONFIG_CAF_DEMUXER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3tab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_CODEC2_DEMUXER)          += codec2utils.o
+# OBJS-$(CONFIG_CODEC2_MUXER)            += codec2utils.o
+# OBJS-$(CONFIG_CODEC2RAW_DEMUXER)       += codec2utils.o
+if(
+    "CONFIG_CODEC2_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_CODEC2_MUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_CODEC2RAW_DEMUXER=yes" IN_LIST native_cfg
+)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/codec2utils.c
+  )
+endif()
+
+# OBJS-$(CONFIG_FLV_DEMUXER)             += mpeg4audio.o
+# OBJS-$(CONFIG_LATM_MUXER)              += mpeg4audio.o
+# OBJS-$(CONFIG_MATROSKA_AUDIO_MUXER)    += mpeg4audio.o
+# OBJS-$(CONFIG_MATROSKA_MUXER)          += mpeg4audio.o
+if(
+    "CONFIG_FLV_DEMUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_LATM_MUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_MATROSKA_AUDIO_MUXER=yes" IN_LIST native_cfg OR
+    "CONFIG_MATROSKA_MUXER=yes" IN_LIST native_cfg
+)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/mpeg4audio.c
+  )
+endif()
+
+# OBJS-$(CONFIG_DNXHD_DEMUXER) += dnxhddata.o
+if("CONFIG_DNXHD_DEMUXER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/dnxhddata.c
+  )
+endif()
+
+# OBJS-$(CONFIG_FITS_DEMUXER) += fits.o
+if("CONFIG_FITS_DEMUXER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/fits.c
+  )
+endif()
+
+# OBJS-$(CONFIG_MOV_DEMUXER) += ac3tab.o
+if("CONFIG_MOV_DEMUXER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3tab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_AC3_PARSER) += ac3tab.o aac_ac3_parser.o
+if("CONFIG_AC3_PARSER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/ac3tab.c
+      libavcodec/aac_ac3_parser.c
+  )
+endif()
+
+# OBJS-$(CONFIG_WMAV1_DECODER) += wmadec.o wma.o wma_common.o aactab.o
+if("CONFIG_WMAV1_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/wmadec.c
+      libavcodec/wma.c
+      libavcodec/wma_common.c
+      libavcodec/aactab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_WMAV1_ENCODER) += wmaenc.o wma.o wma_common.o aactab.o
+if("CONFIG_WMAV1_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/wmaenc.c
+      libavcodec/wma.c
+      libavcodec/wma_common.c
+      libavcodec/aactab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_WMAV2_DECODER) += wmadec.o wma.o wma_common.o aactab.o
+if("CONFIG_WMAV2_DECODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/wmadec.c
+      libavcodec/wma.c
+      libavcodec/wma_common.c
+      libavcodec/aactab.c
+  )
+endif()
+
+# OBJS-$(CONFIG_WMAV2_ENCODER) += wmaenc.o wma.o wma_common.o aactab.o
+if("CONFIG_WMAV2_ENCODER=yes" IN_LIST native_cfg)
+  list(
+      APPEND
+      ffmpeg_codec_files
+      libavcodec/wmaenc.c
+      libavcodec/wma.c
+      libavcodec/wma_common.c
+      libavcodec/aactab.c
   )
 endif()
 
