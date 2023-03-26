@@ -1,20 +1,41 @@
 cmake_minimum_required(VERSION 3.3)
 
 include("cmake/HunterGate.cmake")
+
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.171.tar.gz"
-    SHA1 "5d68bcca78eee347239ca5f4d34f4b6c12683154"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.24.15.tar.gz"
+    SHA1 "8010d63d5ae611c564889d5fe12d3cb7a45703ac"
 )
 
 project(ffmpeg VERSION 4.1)
 
-try_compile(
-    ffmpeg_stdatomic_support
-    "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_stdatomic_support/try_compile"
-    "${CMAKE_CURRENT_LIST_DIR}/cmake/try_compile/stdatomic.c"
-    OUTPUT_VARIABLE
-    output
-)
+find_program(BASH_EXE NAME "bash" HINTS "C:\\Program Files\\Git\\bin\\")
+
+if (MSVC)
+    hunter_add_package(NASM)
+    set(Old "${CMAKE_C_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /experimental:c11atomics")
+    try_compile(
+        ffmpeg_stdatomic_support
+        "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_stdatomic_support/try_compile"
+        "${CMAKE_CURRENT_LIST_DIR}/cmake/try_compile/stdatomic.c"
+        C_STANDARD 11
+        CMAKE_FLAGS CMAKE_C_FLAGS="/experimental:c11atomics"
+        OUTPUT_VARIABLE
+        output)
+    
+    set(CMAKE_C_FLAGS "${Old}")
+
+else()
+    try_compile(
+        ffmpeg_stdatomic_support
+        "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_stdatomic_support/try_compile"
+        "${CMAKE_CURRENT_LIST_DIR}/cmake/try_compile/stdatomic.c"
+        OUTPUT_VARIABLE
+        output)
+endif()
+
+find_program(NASM_EXE NAME "nasm" HINTS ${NASM_ROOT}/bin)
 
 if(NOT ffmpeg_stdatomic_support)
   if(CMAKE_COMPILER_IS_GNUCXX)
@@ -24,8 +45,10 @@ if(NOT ffmpeg_stdatomic_support)
   endif()
 endif()
 
+
 set(
     configure_script
+    ${BASH_EXE}
     ${CMAKE_CURRENT_LIST_DIR}/configure
     --disable-everything
 )
@@ -147,6 +170,7 @@ list(
     --disable-txtpages
 
     --disable-avdevice
+    --disable-yasm
     --enable-avcodec
     --enable-avformat
     --enable-swresample
@@ -198,9 +222,17 @@ list(
     --enable-parser=mpeg4video
     --disable-optimizations
     --enable-debug
-    --cc=${CMAKE_C_COMPILER}
-    --cxx=${CMAKE_CXX_COMPILER}
+#    --x86asmexe=${NASM_EXE}
+    --cc="${CMAKE_C_COMPILER}"
+    --cxx="${CMAKE_CXX_COMPILER}"
 )
+
+if (MSVC)
+    list(APPEND
+        configure_script
+        --extra-ldflags="-nodefaultlib:LIBCMT -nodefaultlib:OLDNAMES -entry:main"
+        )
+endif()
 
 # From Hunter (?)
 list(
