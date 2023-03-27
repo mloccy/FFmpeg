@@ -3,17 +3,18 @@ cmake_minimum_required(VERSION 3.3)
 include("cmake/HunterGate.cmake")
 
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.24.15.tar.gz"
-    SHA1 "8010d63d5ae611c564889d5fe12d3cb7a45703ac"
-)
+    URL "https://github.com/mloccy/hunter/archive/v0.24.17.tar.gz"
+    SHA1 "f685d14fad1118eee52eb7332c0649ac7c857e39"
+    )
 
 project(ffmpeg VERSION 4.1)
 
-find_program(BASH_EXE NAME "bash" HINTS "C:\\Program Files\\Git\\bin\\")
+hunter_add_package(YASM)
+find_package(YASM REQUIRED)
+find_program(YASM_EXE NAME "yasm" HINTS "${YASM_ROOT}/bin/")
+find_program(BASH_EXE NAME "bash" HINTS "/usr/bin/; C:\\Program Files\\Git\\bin\\")
 
 if (MSVC)
-    hunter_add_package(NASM)
-    set(Old "${CMAKE_C_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /experimental:c11atomics")
     try_compile(
         ffmpeg_stdatomic_support
@@ -23,8 +24,6 @@ if (MSVC)
         CMAKE_FLAGS CMAKE_C_FLAGS="/experimental:c11atomics"
         OUTPUT_VARIABLE
         output)
-    
-    set(CMAKE_C_FLAGS "${Old}")
 
 else()
     try_compile(
@@ -35,8 +34,6 @@ else()
         output)
 endif()
 
-find_program(NASM_EXE NAME "nasm" HINTS ${NASM_ROOT}/bin)
-
 if(NOT ffmpeg_stdatomic_support)
   if(CMAKE_COMPILER_IS_GNUCXX)
     include_directories("${CMAKE_CURRENT_LIST_DIR}/compat/atomics/gcc")
@@ -45,13 +42,39 @@ if(NOT ffmpeg_stdatomic_support)
   endif()
 endif()
 
+find_file (_configure_bat_file NAME run_configure.bat HINTS "${CMAKE_CURRENT_LIST_DIR}/cmake/")
+find_file (_configure_sh_file  NAME run_configure.sh  HINTS "${CMAKE_CURRENT_LIST_DIR}/cmake/")
 
-set(
+file(TO_NATIVE_PATH "${_configure_bat_file}" configure_bat_file)
+file(TO_NATIVE_PATH "${_configure_sh_file}" configure_sh_file)
+file(TO_NATIVE_PATH "${HUNTER_MSVC_VCVARSALL}" vc_vars_all)
+
+if (MSVC)
+    set(
+        configure_script
+        cmd
+        /C
+        ${configure_bat_file}
+        ${vc_vars_all}
+        x64
+        ${BASH_EXE}
+        ${configure_sh_file}
+        ${CMAKE_CURRENT_LIST_DIR}/configure
+        #--disable-everything
+    )
+else()
+    set(
+        configure_script
+        ${BASH_EXE}
+        ${CMAKE_CURRENT_LIST_DIR}/configure
+    )
+endif()
+
+list(
+    APPEND
     configure_script
-    ${BASH_EXE}
-    ${CMAKE_CURRENT_LIST_DIR}/configure
-    --disable-everything
-)
+    --disable-everything)
+
 
 # Licensing options
 option(FFMPEG_ENABLE_GPL "Allow use of GPL code" OFF)
@@ -160,7 +183,6 @@ list(
     APPEND
     configure_script
     --enable-cross-compile
-    --fatal-warnings
 
     # Documentation options
     --disable-doc
@@ -170,7 +192,6 @@ list(
     --disable-txtpages
 
     --disable-avdevice
-    --disable-yasm
     --enable-avcodec
     --enable-avformat
     --enable-swresample
@@ -188,7 +209,8 @@ list(
     --disable-sdl2
     --disable-securetransport
     --disable-xlib
-    --disable-asm
+    --enable-x86asm
+    --yasmexe=${YASM_EXE} 
     --enable-parser=h264
     --enable-parser=hevc
     --enable-parser=vp8
@@ -222,15 +244,13 @@ list(
     --enable-parser=mpeg4video
     --disable-optimizations
     --enable-debug
-#    --x86asmexe=${NASM_EXE}
-    --cc="${CMAKE_C_COMPILER}"
-    --cxx="${CMAKE_CXX_COMPILER}"
 )
+
 
 if (MSVC)
     list(APPEND
         configure_script
-        --extra-ldflags="-nodefaultlib:LIBCMT -nodefaultlib:OLDNAMES -entry:main"
+        --toolchain=msvc
         )
 endif()
 
@@ -244,6 +264,9 @@ list(
 set(configure_human "${configure_script}")
 string(REPLACE ";" " " configure_human "${configure_human}")
 message("Run configure command:\n${configure_human}")
+
+set(ENV{CC} ${CMAKE_C_COMPILER})
+set(ENV{CXX} ${CMAKE_CXX_COMPILER})
 
 execute_process(
     COMMAND
@@ -261,7 +284,7 @@ endif()
 file(STRINGS "${ffmpeg_native_gen_dir}/ffbuild/config.mak" native_cfg)
 
 # Fixup CFLAGS and CXXFLAGS from autoconf output
-option(FFMPEG_AUTOCONF_FLAGS "Grep flags from autoconf" OFF)
+option(FFMPEG_AUTOCONF_FLAGS "Grep flags from autoconf" ON)
 
 if(FFMPEG_AUTOCONF_FLAGS)
   file(READ "${ffmpeg_native_gen_dir}/ffbuild/config.mak" file_content)
