@@ -209,8 +209,7 @@ list(
     --disable-sdl2
     --disable-securetransport
     --disable-xlib
-    --enable-x86asm
-    --yasmexe=${YASM_EXE} 
+    --disable-x86asm
     --enable-parser=h264
     --enable-parser=hevc
     --enable-parser=vp8
