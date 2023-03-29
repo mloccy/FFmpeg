@@ -455,6 +455,32 @@ set(
     libavcodec/null_bsf.c
     libavcodec/parser.c
     libavcodec/vp9prob.c
+    libavcodec/x86/bswapdsp_init.c
+    libavcodec/x86/hevcdsp_init.c
+    libavcodec/x86/videodsp_init.c
+    #    libavcodec/x86/vp78dsp_init.c
+    libavcodec/x86/vp8dsp_init.c
+    libavcodec/x86/vp9dsp_init.c
+    libavcodec/x86/mdct15_init.c
+    libavcodec/x86/ac3dsp_init.c
+    libavcodec/x86/fmtconvert_init.c
+    libavcodec/x86/vorbisdsp_init.c
+    libavcodec/x86/h264chroma_init.c
+    libavcodec/x86/h264dsp_init.c
+    libavcodec/x86/h264_qpel.c
+    libavcodec/x86/me_cmp_init.c
+    libavcodec/x86/fft_init.c
+    libavcodec/x86/sbrdsp_init.c
+    libavcodec/x86/opus_dsp_init.c
+    libavcodec/x86/idctdsp_init.c
+    libavcodec/x86/qpeldsp_init.c
+    libavcodec/x86/blockdsp_init.c
+    libavcodec/x86/hpeldsp_init.c
+    libavcodec/x86/h263dsp_init.c
+    libavcodec/x86/aacpsdsp_init.c
+    libavcodec/x86/mpegvideo.c
+    libavcodec/x86/idctdsp_init.c
+    libavcodec/x86/mpegvideodsp.c
 )
 
 # libavcodec/Makefile:OBJS-$(CONFIG_FRAME_THREAD_ENCODER) += frame_thread_encoder.o
@@ -1022,6 +1048,7 @@ set(
     libswresample/audioconvert.c
     libswresample/options.c
     libswresample/resample_dsp.c
+    libswresample/x86/resample_init.c
     libswresample/swresample.c
     libswresample/dither.c
     libswresample/swresample_frame.c
