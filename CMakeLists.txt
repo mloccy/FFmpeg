@@ -932,6 +932,7 @@ set(
     libavutil/lls.c
     libavutil/hash.c
     libavutil/cpu.c
+    libavutil/x86/cpu.c
     libavutil/lzo.c
     libavutil/cast5.c
     libavutil/buffer.c
@@ -956,6 +957,7 @@ set(
     libavutil/slicethread.c
     libavutil/sha.c
     libavutil/float_dsp.c
+    libavutil/x86/float_dsp_init.c
     libavutil/xtea.c
     libavutil/md5.c
     libavutil/samplefmt.c
@@ -987,6 +989,12 @@ set(
     libavutil/stereo3d.c
     libavutil/log.c
     libavutil/timecode.c
+    libavutil/x86/cpu.c
+    libavutil/x86/fixed_dsp_init.c
+    libavutil/x86/float_dsp_init.c
+    libavutil/x86/imgutils_init.c
+    libavutil/x86/lls_init.c
+    libavutil/x86/pixelutils_init.c
 )
 
 if(APPLE)
@@ -995,6 +1003,13 @@ if(APPLE)
       ffmpeg_util_files
       libavutil/hwcontext_videotoolbox.c
   )
+elseif(MSVC)
+    list(
+        APPEND
+        ffmpeg_util_files
+        libavutil/hwcontext_dxva2.c
+        libavutil/hwcontext_d3d11va.c
+    )
 endif()
 
 add_library(avutil ${ffmpeg_util_files})
@@ -1027,6 +1042,10 @@ set(
     libswscale/swscale_unscaled.c
     libswscale/gamma.c
     libswscale/yuv2rgb.c
+    libswscale/x86/yuv2rgb.c
+    libswscale/x86/hscale_fast_bilinear_simd.c
+    libswscale/x86/rgb2rgb.c
+    libswscale/x86/swscale.c
     libswscale/alphablend.c
     libswscale/rgb2rgb.c
     libswscale/slice.c
